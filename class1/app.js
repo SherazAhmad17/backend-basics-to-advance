@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
+import userRouter from './router/user.router.js';
 
 dotenv.config();
 
@@ -37,6 +38,9 @@ const limiter = rateLimit({
 })
 
 app.use(limiter);
+
+
+app.use('/api/v1/users', userRouter);
 
 
 export default app;
