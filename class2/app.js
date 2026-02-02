@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import ErrorMiddleWare from './middleware/ErrorMiddleWare.middleware.js';
+import userRouter from './router/user.route.js';
 
 dotenv.config();
 
@@ -47,6 +48,8 @@ const limiter = rateLimit({
 app.use(limiter)
 
 app.use(express.json());
+
+app.use('/api/v1/users', userRouter)
 
 
 app.use(ErrorMiddleWare)
