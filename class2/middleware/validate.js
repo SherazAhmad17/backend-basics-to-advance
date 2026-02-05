@@ -1,5 +1,3 @@
-import { success } from "zod"
-
 function validate(schema){
     return (req,res,next)=>{
         if(!req.body || Object.keys(req.body).length === 0){
@@ -9,18 +7,18 @@ function validate(schema){
             })
         }
 
-        const result = schema.parse(req.body);
+        const result = schema.safeParse(req.body);
 
         if(result.success){
             req.body = result.data;
-            next();
+            return next();
         }
 
         let errors = {};
 
-        result.error.issues.forEach(issues => {
-            const path = issues.path[0];
-            errors[path] = issues.message;
+        result.error.issues.forEach(issue => {
+            const path = issue.path[0];
+            errors[path] = issue.message;
         });
 
         res.status(400).json({

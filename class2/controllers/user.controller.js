@@ -14,27 +14,27 @@ const registerUser = async(req,res,next)=>{
     // destructuring properties
     let {name, email, password, gender} = req.body;
 
-    // check all fields are filled
-    if(!name || !email || !password || !gender){
-        return next(new CustomError(400, "All fields are required"));
-    }
+    // // check all fields are filled
+    // if(!name || !email || !password || !gender){
+    //     return next(new CustomError(400, "All fields are required"));
+    // }
 
-    //check check gender is valid
-    const validGenders = ['male', 'female', 'others'];
-    if(!validGenders.includes(gender)){
-        return next(new CustomError(400, "Invalid gender"));
-    }
+    // //check check gender is valid
+    // const validGenders = ['male', 'female', 'others'];
+    // if(!validGenders.includes(gender)){
+    //     return next(new CustomError(400, "Invalid gender"));
+    // }
 
-    //check for email
-    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if(!emailRegex.test(email)){
-        return next(new CustomError(400, "Invalid email"));
-    }
+    // //check for email
+    // const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    // if(!emailRegex.test(email)){
+    //     return next(new CustomError(400, "Invalid email"));
+    // }
 
-    // check for password length
-    if(password.length < 8){
-        return next (new CustomError(400, "Password must be at least 8 characters long"));
-    }
+    // // check for password length
+    // if(password.length < 8){
+    //     return next (new CustomError(400, "Password must be at least 8 characters long"));
+    // }
 
     // check for duplicate email
     const userExist = await User.findOne({email});
