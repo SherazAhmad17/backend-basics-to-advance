@@ -1,5 +1,6 @@
 import CustomError from "../handler/CustomError.handler.js";
 import User from "../models/user.model.js";
+import AsyncHandler from "../handler/AsyncHandler.js";
 
 function gettingUser(req,res,next){
     res.json({
@@ -9,7 +10,7 @@ function gettingUser(req,res,next){
 
 //register user
 
-const registerUser = async(req,res,next)=>{
+const registerUser = AsyncHandler(async(req,res,next)=>{
 
     // destructuring properties
     let {name, email, password, gender} = req.body;
@@ -62,7 +63,7 @@ const registerUser = async(req,res,next)=>{
     })
 
     
-    }
+    })
 
 
 export {gettingUser , registerUser};
