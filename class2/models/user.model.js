@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 
 //making schema
@@ -32,6 +33,20 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Gender is required"],
   }
 }, {timestamps: true} ); // timestamps will add createdAt and updatedAt
+
+
+//idr ham bycript wla password save karenge
+UserSchema.pre("save", async function(){
+  if(!this.isModified("password")){
+    return;
+  }
+  try {
+    this.password = await bcrypt.hash(this.password, 10); //10 here is salt namak nahe dusra wla
+
+  } catch (error) {
+    console.log("faild bycript password")
+  }
+})
 
 // making model
 
