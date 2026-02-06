@@ -3,7 +3,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import ErrorMiddleWare from './middleware/ErrorMiddleWare.middleware.js';
-import userRouter from './router/user.route.js';
+// import userRouter from './router/user.route.js';
+import authRouter from './router/auth.route.js';
 
 dotenv.config();
 
@@ -49,7 +50,9 @@ app.use(limiter)
 
 app.use(express.json());
 
-app.use('/api/v1/users', userRouter)
+// app.use('/api/v1/users', userRouter)
+
+app.use('/api/v1/auth', authRouter)
 
 
 app.use(ErrorMiddleWare)

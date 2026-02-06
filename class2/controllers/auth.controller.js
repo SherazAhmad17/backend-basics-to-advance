@@ -1,6 +1,7 @@
 import CustomError from "../handler/CustomError.handler.js";
 import User from "../models/user.model.js";
 import AsyncHandler from "../handler/AsyncHandler.js";
+import generateAccessToken from "../utils/generateAccessToken.js";
 
 function gettingUser(req,res,next){
     res.json({
@@ -66,4 +67,38 @@ const registerUser = AsyncHandler(async(req,res,next)=>{
     })
 
 
-export {gettingUser , registerUser};
+    // login user
+
+const LoginUser = AsyncHandler(async(req,res,next)=>{
+
+    const {email, password} = req.body; // getting email and password
+
+    const user = await User.findOne({email}).select('+password');  // finding user
+
+    if(!user){
+        return next(new CustomError(400, "invalid credentials"))
+    }
+
+    const checkPassword = await user.comparePassword(password); // checking password
+
+    if(!checkPassword){
+        return next(new CustomError(400, "invalid credentials"))
+    }
+
+    const token = generateAccessToken(user); // generating token
+
+    res.status(200).json({
+        success:true,
+        message: "user login successfully",
+        accessToken:token
+    })
+
+
+
+
+
+
+})
+
+
+export {gettingUser , registerUser, LoginUser};
