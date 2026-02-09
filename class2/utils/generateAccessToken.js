@@ -2,10 +2,24 @@ import jwt from 'jsonwebtoken';
 
 function generateAccessToken(user){
 
-    const token = jwt.sign({userId:user._id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES} )
+    if(!user){
+        throw new Error('user is not found');
+    }
+
+    const token = jwt.sign({userId:user._id}, process.env.ACCESS_SECRET, {expiresIn: "12m"} )
     
     return token
 }
 
+function generateRefreshToken(user){
 
-export default generateAccessToken;
+    if(!user){
+        throw new Error('user is not found');
+    }
+
+    const token = jwt.sign({userId:user._id}, process.env.REFRESH_SECRET, {expiresIn: "1d"} )
+    
+    return token
+}
+
+export  {generateAccessToken, generateRefreshToken};

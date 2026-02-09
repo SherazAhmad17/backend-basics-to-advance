@@ -5,6 +5,8 @@ import rateLimit from 'express-rate-limit';
 import ErrorMiddleWare from './middleware/ErrorMiddleWare.middleware.js';
 // import userRouter from './router/user.route.js';
 import authRouter from './router/auth.route.js';
+import cookieParser from 'cookie-parser';
+import userRouter from './router/user.route.js';
 
 dotenv.config();
 
@@ -16,7 +18,7 @@ const readOnly =['*'];
 const corsOptions = {
     origin: (origin, callback)=>{
         if(!origin){
-            return callback(null, true);
+            return callback(null, {origin: true, credentials: true , allowedHeaders: ['Content-Type', 'Authorization']});
         }
 
         if(isAllowed.includes(origin)){
@@ -25,7 +27,9 @@ const corsOptions = {
 
         else if(readOnly.includes(origin)){
             return callback(null, {
-                methods: 'GET'
+                methods: 'GET',
+                credentials: true,
+                allowedHeaders: ['Content-Type', 'Authorization']
             })
         }
     }
@@ -49,10 +53,12 @@ const limiter = rateLimit({
 app.use(limiter)
 
 app.use(express.json());
+app.use(cookieParser());
 
 // app.use('/api/v1/users', userRouter)
 
 app.use('/api/v1/auth', authRouter)
+app.use("/api/v1/users" , userRouter)
 
 
 app.use(ErrorMiddleWare)

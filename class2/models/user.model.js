@@ -31,7 +31,15 @@ const UserSchema = new mongoose.Schema({
     type: String,
     enum: ["male","female","others"],
     required: [true, "Gender is required"],
-  }
+  },
+  refreshToken: [
+    {
+      token:{
+        type: String,
+        createdAt : Date
+      }
+    }
+  ]
 }, {timestamps: true} ); // timestamps will add createdAt and updatedAt
 
 

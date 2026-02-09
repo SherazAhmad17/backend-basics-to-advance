@@ -1,7 +1,8 @@
 import CustomError from "../handler/CustomError.handler.js";
 import User from "../models/user.model.js";
 import AsyncHandler from "../handler/AsyncHandler.js";
-import generateAccessToken from "../utils/generateAccessToken.js";
+import {generateAccessToken , generateRefreshToken } from "../utils/generateAccessToken.js";
+import cookiesOptions from "../utils/cookiesOptions.js";
 
 function gettingUser(req,res,next){
     res.json({
@@ -86,11 +87,26 @@ const LoginUser = AsyncHandler(async(req,res,next)=>{
     }
 
     const token = generateAccessToken(user); // generating token
+    const refreshToken = generateRefreshToken(user); //generating refresh token
 
-    res.status(200).json({
-        success:true,
-        message: "user login successfully",
-        accessToken:token
+    //store in db
+    user.refreshToken = [{token: refreshToken, createdAt: Date.now()}]; // storing refresh token
+    await user.save({validateBeforeSave: false}) //this will not validate before saving
+
+
+    res
+    .cookie("refreshToken", refreshToken , cookiesOptions) // sending refresh token in cookies
+    .status(200)
+    .json({
+        success: true,
+        message: "user logged in successfully",
+        "data" : {
+            email: user.email,
+            id: user._id,
+            name: user.name,
+            gender: user.gender,
+            accessToken: token
+        }
     })
 
 
