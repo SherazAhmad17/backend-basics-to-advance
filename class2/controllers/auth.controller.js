@@ -3,6 +3,7 @@ import User from "../models/user.model.js";
 import AsyncHandler from "../handler/AsyncHandler.js";
 import {generateAccessToken , generateRefreshToken } from "../utils/generateAccessToken.js";
 import cookiesOptions from "../utils/cookiesOptions.js";
+import jwt from "jsonwebtoken"
 
 function gettingUser(req,res,next){
     res.json({
@@ -117,4 +118,49 @@ const LoginUser = AsyncHandler(async(req,res,next)=>{
 })
 
 
-export {gettingUser , registerUser, LoginUser};
+const refreshToken = AsyncHandler(async (req,res,next)=>{
+
+    const getToken = req.cookies.refreshToken;
+
+    // console.log(getToken)
+
+    if(!getToken){
+        return next(new CustomError(401, "unauthorized"));
+    }
+    
+    const decoded = jwt.verify(getToken, process.env.REFRESH_SECRET)
+
+    if(!decoded.userId){
+        return next(new CustomError(401, "unauthorized"));
+    }
+
+    const isTokenExist = await User.findOne({"refreshToken.token": getToken});
+
+    if(!isTokenExist){
+        return next(new CustomError(401, "unauthorized"));
+    }
+
+    const newRefreshToken = generateRefreshToken(isTokenExist);
+    const newAccessToken =  generateAccessToken(isTokenExist);
+
+    isTokenExist.refreshToken = [{token:newRefreshToken , createdAt:Date.now()}]
+
+    await isTokenExist.save({validateBeforeSave: false})
+
+    res
+    .cookie("refreshToken" , newRefreshToken , cookiesOptions)
+    .status(201)
+    .json({
+        success:true,
+        message: `${isTokenExist.name} your token is refreshed successfully`,
+        "data" : {
+            accessToken: newAccessToken
+        }
+    })
+
+
+
+})
+
+
+export {gettingUser , registerUser, LoginUser, refreshToken};
