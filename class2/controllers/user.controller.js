@@ -5,7 +5,7 @@ const me = AsyncHandler(async(req,res,next)=>{
 
     res.status(200).json({
         success: true,
-        message: "user fetched successfully",
+        message: "user fetched successfullys",
         user
     })
 })
