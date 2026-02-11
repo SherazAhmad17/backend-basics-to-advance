@@ -25,7 +25,7 @@ function welcomeEmailTemplate(username, useremail) {
             color: #333;
         ">
             <h2 style="color: #4CAF50;">
-                Welcome to UCONNECT, ${username}! 🎉
+                Welcome to Sheraz Compnay, ${username}! 🎉
             </h2>
 
             <p>We are thrilled to have you on board.</p>
