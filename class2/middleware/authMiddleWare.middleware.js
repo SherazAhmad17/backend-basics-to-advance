@@ -27,6 +27,7 @@ const authMiddleWare = AsyncHandler(async(req,res,next)=>{
     }
 
     req.user = user;
+    req.role = user.role;
     next();
 
 })

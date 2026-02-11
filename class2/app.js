@@ -7,6 +7,7 @@ import ErrorMiddleWare from './middleware/ErrorMiddleWare.middleware.js';
 import authRouter from './router/auth.route.js';
 import cookieParser from 'cookie-parser';
 import userRouter from './router/user.route.js';
+import adminRoute from './router/admin.route.js';
 
 dotenv.config();
 
@@ -57,6 +58,7 @@ app.use(cookieParser());
 
 // app.use('/api/v1/users', userRouter)
 
+app.use('/api/v1/admin', adminRoute)
 app.use('/api/v1/auth', authRouter)
 app.use("/api/v1/users" , userRouter)
 

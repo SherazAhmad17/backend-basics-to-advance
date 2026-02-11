@@ -32,6 +32,11 @@ const UserSchema = new mongoose.Schema({
     enum: ["male","female","others"],
     required: [true, "Gender is required"],
   },
+  role: {
+    type:String,
+    enum: ["user", "admin", "manager", "superman"],
+    default: "user",
+  },
   refreshToken: [
     {
       token:{

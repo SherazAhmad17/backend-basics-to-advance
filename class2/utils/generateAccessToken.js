@@ -6,7 +6,7 @@ function generateAccessToken(user){
         throw new Error('user is not found');
     }
 
-    const token = jwt.sign({userId:user._id}, process.env.ACCESS_SECRET, {expiresIn: "50s"} )
+    const token = jwt.sign({userId:user._id}, process.env.ACCESS_SECRET, {expiresIn: "1d"} )
     
     return token
 }
@@ -17,7 +17,7 @@ function generateRefreshToken(user){
         throw new Error('user is not found');
     }
 
-    const token = jwt.sign({userId:user._id}, process.env.REFRESH_SECRET, {expiresIn: "1d"} )
+    const token = jwt.sign({userId:user._id}, process.env.REFRESH_SECRET, {expiresIn: "9d"} )
     
     return token
 }
