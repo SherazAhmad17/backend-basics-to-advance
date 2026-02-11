@@ -4,6 +4,8 @@ import AsyncHandler from "../handler/AsyncHandler.js";
 import {generateAccessToken , generateRefreshToken } from "../utils/generateAccessToken.js";
 import cookiesOptions from "../utils/cookiesOptions.js";
 import jwt from "jsonwebtoken"
+import { welcomeEmailTemplate } from "../emailTampelets/regWelcomeEmailTemplet.js";
+import emailSend from "../utils/emailSend.utils.js";
 
 function gettingUser(req,res,next){
     res.json({
@@ -59,6 +61,10 @@ const registerUser = AsyncHandler(async(req,res,next)=>{
     if(!user){
         return next(new CustomError(500, "Something went wrong"));
     }
+
+    const welcomeEmailTemplete = welcomeEmailTemplate(user.name , user.email);
+
+    await emailSend(user.email , "welcome to our website" , welcomeEmailTemplete);
 
     res.status(201).json({
         message: 'user is created successfully',
