@@ -11,6 +11,7 @@ const emailSend = async(userEmail,subject,html)=>{  //here we are sending email 
             html:html,
         })
         console.log(chalk.blueBright.bgGreen("email send successfully")) //checking if email is send
+        return true;
     } catch (error) {
         console.log(chalk.red.bgBlack("failed to snd the mail"))        //checking if email is not send
         console.log(chalk.red("Error details:", error.message))         //log the actual error message

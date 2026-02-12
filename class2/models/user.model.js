@@ -37,6 +37,17 @@ const UserSchema = new mongoose.Schema({
     enum: ["user", "admin", "manager", "superman"],
     default: "user",
   },
+
+  forgetPasswordToken: {
+    type: String,
+    default: null
+  },
+
+  forgetPasswordTokenExpiry: {
+    type : Date,
+    default:null
+  },
+
   refreshToken: [
     {
       token:{
