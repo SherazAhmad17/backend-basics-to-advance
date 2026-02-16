@@ -112,7 +112,7 @@ const LoginUser = AsyncHandler(async(req,res,next)=>{
             id: user._id,
             name: user.name,
             gender: user.gender,
-            accessToken: token
+            accessToken
         }
     })
 
@@ -159,9 +159,8 @@ const refreshToken = AsyncHandler(async (req,res,next)=>{
     .json({
         success:true,
         message: `${isTokenExist.name} your token is refreshed successfully`,
-        "data" : {
-            accessToken: newAccessToken
-        }
+        accessToken:newAccessToken,
+        user: isTokenExist
     })
 
 
