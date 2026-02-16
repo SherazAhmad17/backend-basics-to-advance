@@ -93,7 +93,7 @@ const LoginUser = AsyncHandler(async(req,res,next)=>{
         return next(new CustomError(400, "invalid credentials"))
     }
 
-    const token = generateAccessToken(user); // generating token
+    const accessToken = generateAccessToken(user); // generating token
     const refreshToken = generateRefreshToken(user); //generating refresh token
 
     //store in db
@@ -107,13 +107,8 @@ const LoginUser = AsyncHandler(async(req,res,next)=>{
     .json({
         success: true,
         message: "user logged in successfully",
-        "data" : {
-            email: user.email,
-            id: user._id,
-            name: user.name,
-            gender: user.gender,
-            accessToken
-        }
+        accessToken,
+        user
     })
 
 

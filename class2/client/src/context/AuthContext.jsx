@@ -13,7 +13,7 @@ const AuthProvider = ({ children }) => {
     async function session() {
       try {
         const res = await AuthApi.refreshToken();
-        setAccessToken(res.data.data.accessToken);
+        setAccessToken(res.data.accessToken);
         setUser(res.data.user);
       } catch {
         setAccessToken(null);
@@ -32,7 +32,7 @@ const AuthProvider = ({ children }) => {
         if (accessToken && !config._retry) {
           config.headers.Authorization = `Bearer ${accessToken}`;
         }
-        return api(config);
+        return config;
       },
       (err) => {
         return Promise.reject(err);
@@ -54,23 +54,29 @@ const AuthProvider = ({ children }) => {
       },
       async (err) => {
         const failedRequest = err.config; //req obj
+        // Don't retry the refresh endpoint itself to avoid infinite loops
+        const isRefreshendpoint = failedRequest.url.includes('/auth/refresh-token');
+
         if (
-          err.response.status === 401 &&
-          err.response.status === 403 &&
-          !failedRequest._retry
+          (err.response.status === 401 || err.response.status === 403) &&
+          !failedRequest._retry &&
+          !isRefreshendpoint
         ) {
           failedRequest._retry = true;
           try {
             const res = await AuthApi.refreshToken();
+            const newAccessToken = res.data.accessToken;
             failedRequest.headers.Authorization = `Bearer ${res.data.accessToken}`;
 
-            setUser(res.data.user);
-            setAccessToken(res.data.accessToken);
+            const userData = res.data.user;
+            setUser(userData);
+            setAccessToken(newAccessToken);
 
-            return failedRequest;
-          } catch {
+            return api(failedRequest);
+          } catch (error) {
             setUser(null);
             setAccessToken(null);
+            return Promise.reject(error);
           }
         }
 
@@ -85,7 +91,7 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      values={{ user, setUser, setAccessToken, accessToken, isAuthenticated }}
+      value={{ user, setUser, setAccessToken, accessToken, isAuthenticated }}
     >
       {children}
     </AuthContext.Provider>
