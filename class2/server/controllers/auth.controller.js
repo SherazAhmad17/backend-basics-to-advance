@@ -163,4 +163,24 @@ const refreshToken = AsyncHandler(async (req,res,next)=>{
 })
 
 
-export {gettingUser , registerUser, LoginUser, refreshToken};
+const logoutUser = AsyncHandler(async(req,res,next)=>{
+
+    const user = req.user;
+    user.refreshToken = null;
+    await user.save({validateBeforeSave: false})
+
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict"
+    })
+
+    res.status(200).json({
+        success:true,
+        message: `${user.name} you are logged out successfully`
+    })
+
+})
+
+
+export {gettingUser , registerUser, LoginUser, refreshToken, logoutUser};
