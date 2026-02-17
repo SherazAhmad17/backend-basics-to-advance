@@ -7,6 +7,8 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const isAuthenticated = accessToken ? true : false;
 
   useEffect(() => {
@@ -18,7 +20,9 @@ const AuthProvider = ({ children }) => {
       } catch {
         setAccessToken(null);
         setUser(null);
-      }
+      }finally {
+      setLoading(false); 
+    }
     }
     session();
   }, []);
@@ -91,7 +95,7 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, setUser, setAccessToken, accessToken, isAuthenticated }}
+      value={{ user, setUser, setAccessToken, accessToken, isAuthenticated, loading }}
     >
       {children}
     </AuthContext.Provider>

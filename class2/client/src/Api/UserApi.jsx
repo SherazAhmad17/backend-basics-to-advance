@@ -2,7 +2,7 @@ import { api } from "./AxiosIntense";
 
 const UserApi = {
 
-    registerUser: (data)=>{
+    register: (data)=>{
         return api.post("/auth/register", data)
     },
 
@@ -12,4 +12,4 @@ const UserApi = {
 
 }
 
-export default UserApi
+export  {UserApi}

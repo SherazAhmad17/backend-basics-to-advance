@@ -1,4 +1,3 @@
-import { success } from "zod";
 import AsyncHandler from "../handler/AsyncHandler.js";
 import CustomError from "../handler/CustomError.handler.js";
 import User from "../models/user.model.js";
