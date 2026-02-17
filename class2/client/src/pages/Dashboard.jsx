@@ -15,14 +15,26 @@ import {
   HiOutlineCog,
   HiOutlineBell,
 } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
+import { AuthApi } from "../Api/AuthApi";
 
 const Dashboard = () => {
+
+  const navigate = useNavigate();  
   const { user, setUser, setAccessToken } = useAuth();
 
-  const handleLogout = () => {
-    setUser(null);
-    setAccessToken(null);
-  };
+
+  async function handleLogout() {
+        try {
+          await AuthApi.logout();
+          //setting user and access token to null
+          setUser(null);
+          setAccessToken(null);
+          navigate("/login")
+        } catch (error) {
+          console.log(error, "error from logout")
+        }
+  }
 
   const stats = [
     {

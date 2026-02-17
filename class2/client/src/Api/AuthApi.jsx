@@ -9,6 +9,9 @@ const AuthApi = {
 
     refreshToken: ()=>{
         return api.post("/auth/refresh-token")
+    },
+    logout: ()=>{
+        return api.get("/auth/logout")
     }
 
 

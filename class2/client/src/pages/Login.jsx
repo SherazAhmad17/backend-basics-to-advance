@@ -17,9 +17,9 @@ function Login() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
     }
-  }, [isAuthenticated]);
+  }, []);
 
   const {
     register,
@@ -43,6 +43,7 @@ function Login() {
       toast.success("Login Successful! Redirecting...");
       setAccessToken(res.data.accessToken);
       setUser(res.data.user);
+      navigate("/dashboard");
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "Something went wrong";

@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import ProtectedRoutes from "./routes/protectedRoutes";
 import Dashboard from "./pages/Dashboard";
+import NotFound from "./pages/NotFound";
 
 const router = createBrowserRouter([
     {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
                 element: <Dashboard/>
             }
         ]
+    },
+    {
+        path: "*",
+        element: <NotFound/>
     }
 ])
 
