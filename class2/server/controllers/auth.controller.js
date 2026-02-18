@@ -182,5 +182,36 @@ const logoutUser = AsyncHandler(async(req,res,next)=>{
 
 })
 
+const googleAuthCallback = AsyncHandler(async(req,res,next)=>{
 
-export {gettingUser , registerUser, LoginUser, refreshToken, logoutUser};
+        try {
+            
+            // here we will get the user from the passport
+            const user = req.user;
+
+            // generating access tokens
+            const accessToken = generateAccessToken(user);
+
+            // generating refresh tokens
+            const refreshToken = generateRefreshToken(user);
+
+            //now we will store token in db
+            user.refreshToken = [{token:refreshToken , createdAt:new Date()}]
+            await user.save()
+
+            //store refresh token in cookies
+            res.cookie("refreshToken" , refreshToken , cookiesOptions)
+
+            res.redirect(`http://localhost:5173/auth/success?accessToken=${accessToken}`)
+            
+
+
+
+        } catch (error) {
+            res.redirect(`http://localhost:5173/auth/failure?error=${encodeURIComponent(error.message)}`)
+        }
+
+})
+
+
+export {gettingUser , registerUser, LoginUser, refreshToken, logoutUser, googleAuthCallback};

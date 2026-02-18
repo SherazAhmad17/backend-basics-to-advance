@@ -8,6 +8,7 @@ import authRouter from "./router/auth.route.js";
 import cookieParser from "cookie-parser";
 import userRouter from "./router/user.route.js";
 import adminRoute from "./router/admin.route.js";
+import {passport} from "./config/passport.js"
 
 dotenv.config();
 
@@ -65,6 +66,9 @@ app.use(limiter);
 
 app.use(express.json());
 app.use(cookieParser());
+
+//using the passport middleware
+app.use(passport.initialize())
 
 // app.use('/api/v1/users', userRouter)
 

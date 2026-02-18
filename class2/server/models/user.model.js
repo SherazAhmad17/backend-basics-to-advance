@@ -23,8 +23,9 @@ const UserSchema = new mongoose.Schema({
   },
   password:{
     type: String,
-    required: [true, "Password is required"],
-    minLength: [8, "Password must be at least 8 characters long"],
+    required: function(){
+      return this.provider === "local"
+    },
     select: false
   },
   gender: {
@@ -55,13 +56,23 @@ const UserSchema = new mongoose.Schema({
         createdAt : Date
       }
     }
-  ]
+  ],
+  provider: {
+    type:String,
+    enum: ["google", "local"],
+    default: "local"
+  },
+  googleId: {
+    type: String,
+    default: null
+  }
+  
 }, {timestamps: true} ); // timestamps will add createdAt and updatedAt
 
 
 //idr ham bycript wla password save karenge
 UserSchema.pre("save", async function(){
-  if(!this.isModified("password")){
+  if(!this.isModified("password") || this.provider !== "local"){
     return;
   }
   try {
