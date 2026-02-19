@@ -5,6 +5,7 @@ import ProtectedRoutes from "./routes/protectedRoutes";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import GoogleAuth from "./pages/GoogleAuth";
+import CreatePost from "./pages/CreatePost";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
         path: "",
         element: <Dashboard />,
       },
+      {
+        path: "create-post",
+        element: <CreatePost/>,
+      }
     ],
   },
   {
