@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 import userRouter from "./router/user.route.js";
 import adminRoute from "./router/admin.route.js";
 import {passport} from "./config/passport.js"
+import postRouter from "./router/post.route.js"
 
 dotenv.config();
 
@@ -72,6 +73,7 @@ app.use(passport.initialize())
 
 // app.use('/api/v1/users', userRouter)
 
+app.use("/api/v1/post" , postRouter)
 app.use("/api/v1/admin", adminRoute);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);

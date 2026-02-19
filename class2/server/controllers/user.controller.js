@@ -100,7 +100,7 @@ const resetPassword = AsyncHandler(async(req,res,next)=>{
     user.forgetPasswordToken = null; // clearing forgetPasswordToken
     user.forgetPasswordTokenExpiry = null; // clearing forgetPasswordTokenExpiry
 
-    user.save(); // saving the user in db
+    await user.save(); // saving the user in db
 
     res.status(200).json({
         success:true,
