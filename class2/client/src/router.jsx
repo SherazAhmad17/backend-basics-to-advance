@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import GoogleAuth from "./pages/GoogleAuth";
 import CreatePost from "./pages/CreatePost";
+import Posts from "./pages/Posts";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "create-post",
         element: <CreatePost/>,
+      },
+      {
+        path: "posts",
+        element: <Posts />,
       }
     ],
   },
